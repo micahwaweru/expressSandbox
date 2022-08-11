@@ -9,6 +9,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//create
 app.post('/test',(req,res)=>{
     console.log(req.body)
     const formData = req.body;
@@ -16,6 +17,12 @@ app.post('/test',(req,res)=>{
         if(err)throw err;
         dbData = JSON.parse(data);
         dbData.push(formData);
+        let number = 1;
+            dbData.forEach((note,index)=>{
+                note.id = number;
+                number++;
+                return dbData;
+            });
         stringData = JSON.stringify(dbData);
         fs.writeFile('db.json',stringData,(err,data)=>{
             if(err)throw err;
@@ -26,7 +33,7 @@ app.post('/test',(req,res)=>{
 
     res.send("Success!")
 });
-
+//read
 app.get('/read',(req,res)=>{
     fs.readFile('db.json',(err,data)=>{
         if(err)throw err;
@@ -35,6 +42,10 @@ app.get('/read',(req,res)=>{
         res.send(stringData)
     })
 })
+
+//update
+
+//delete
 
 app.listen(PORT, ()=>{
     console.log(`Example app listen at http://localhost:${PORT}`)
